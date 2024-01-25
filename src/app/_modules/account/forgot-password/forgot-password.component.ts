@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '@app/_services/api.service';
 import { EmailService } from '@app/_services/email.service';
 @Component({
   selector: 'app-forgot-password',
@@ -16,7 +17,7 @@ export class ForgotPasswordComponent {
   hidePassword: boolean = true;
   errMsg: any;
 
-  constructor(private emailService: EmailService){}
+  constructor(private apiService: ApiService){}
 
   ngOnInit(): void {
     
@@ -37,14 +38,21 @@ export class ForgotPasswordComponent {
       return;
     }
     else{
-      this.emailService.sendEmail("Angay", "baluangayar@gmail.com", "Never regret", "Don't worry, everything will be alright").subscribe(
+      const mailOptions = {
+        from: 'baluangayar@gmail.com',
+        to: this.profileForm.value.email ? this.profileForm.value.email : '', // Replace with recipient email address
+        subject: "Quiz App - Account created successfully!",
+        // text: `${name}\n${message}`,
+        html: `<p>"Your Account created successfully.\nPlease confirm your email"</p>`
+      };
+      this.apiService.sendEmail(JSON.stringify(mailOptions)).subscribe(
         (response: any) => {
           console.log("response: ", response)
           console.log('Email sent successfully!');
         },
         (error: any) => {
           console.log('Error sending email:', error);
-        });
+      });
     }
   }
 }

@@ -10,12 +10,12 @@
         <!-- Login Form -->
         <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
             <div>
-                <input type="text" id="login" class="fadeIn second" formControlName="name" 
+                <input type="text" class="fadeIn second" formControlName="name" 
                     [ngClass]="{ 'is-invalid': submitted && f.name.errors }" placeholder="Name" autocomplete="off">
                 <div class="invalid-feedback">Please enter your name</div>
             </div>
             <div>
-                <input type="text" id="login" class="fadeIn second" formControlName="email" 
+                <input type="text"class="fadeIn second" formControlName="email" 
                     [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="Email" autocomplete="off">
                 <div class="invalid-feedback">Please enter your email</div>
             </div>

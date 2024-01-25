@@ -7,12 +7,14 @@ import { SignupComponent } from './signup/signup.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { EmailService } from '@app/_services/email.service';
 import { HttpClientModule } from '@angular/common/http';
+import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     SignupComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    EmailConfirmationComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
   exports: [
     LoginComponent,
     SignupComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    EmailConfirmationComponent
   ]
 })
 export class AccountModule { }

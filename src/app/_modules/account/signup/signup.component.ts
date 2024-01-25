@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '@app/_services/api.service';
+import { EmailService } from '@app/_services/email.service';
+import { StudentService } from '@app/_services/student.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,6 +20,11 @@ export class SignupComponent {
   submitted = false;
   hidePassword: boolean = true;
   errMsg: any;
+  userId: any;
+
+  constructor(private studentService: StudentService,
+    private emailService: EmailService,
+    private apiService: ApiService){}
 
   ngOnInit(): void {
     
@@ -36,7 +44,33 @@ export class SignupComponent {
       return;
     }
     else{
-      alert("submitted!")
+      this.studentService.addStudent(this.profileForm.value.name ? this.profileForm.value.name : '', this.profileForm.value.email ? this.profileForm.value.email : '', this.profileForm.value.password ? this.profileForm.value.password : '').subscribe(
+        (response: any) => {
+          console.log("response: ", response)
+          console.log('Account created successfully!');
+          let data = {
+            id: response?.result?.insertId
+          }
+
+          // console.log("Id : ",JSON.stringify(data))
+
+          this.apiService.generateToken(JSON.stringify(data)).subscribe(
+            (response: any) => {
+              console.log("response: ", response)
+              console.log('Token generated successfully!');
+              let name = this.profileForm.value.name ? this.profileForm.value.name : '';
+              let email = this.profileForm.value.email ? this.profileForm.value.email : '';
+              this.emailService.sendEmail(response?.email_token, response?.result?.insertId, name, email);
+            },
+            (error: any) => {
+              console.log('Error adding student:', error);
+          });
+        },
+        (error: any) => {
+          console.log('Error adding student:', error);
+      });
     }
   }
+
+
 }
